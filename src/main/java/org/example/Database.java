@@ -16,6 +16,11 @@ public class Database {
             "    task_date DATE," +
             "    priority INT," +
             "    deleted BOOLEAN NOT NULL DEFAULT FALSE)";
+    private final String INSERT = "INSERT INTO todos (" +
+            "title, " +
+            "description, " +
+            "task_date, " +
+            "priority) VALUES (?,?,?,?)";
     private String getConnectionURL(){
         String propsPath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties";
         Properties properties = new Properties();
@@ -52,6 +57,27 @@ public class Database {
             }
             System.out.println("Established Connection.");
             statement.executeUpdate();
+            System.out.println("TABLE CREATED");
+        } catch (SQLException e) {
+            System.out.println("SQL Error Occurred: "+ e.getMessage());
+            e.printStackTrace();
+        }finally {
+            System.out.println("Closed connection.");
+        }
+    }
+    public void executeInsertQuery(Todo todo){
+        try(Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(INSERT)){
+            if(connection == null){
+                throw new SQLException("ERROR: Error getting connection.");
+            }
+            statement.setString(1, todo.getTitle());
+            statement.setString(2, todo.getDescription());
+            statement.setDate(3, todo.getTask_date());
+            statement.setInt(4, todo.getPriority());
+            System.out.println("Established Connection.");
+            statement.executeUpdate();
+            System.out.println("INSERTED");
         } catch (SQLException e) {
             System.out.println("SQL Error Occurred: "+ e.getMessage());
             e.printStackTrace();
