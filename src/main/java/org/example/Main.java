@@ -8,10 +8,11 @@ public class Main {
 
         Database db = new Database();
 //        db.executeCreateQuery();
-        db.executeInsertQuery(new Todo("Study",
+        /*db.executeInsertQuery(new Todo("Study",
                 "Study Java concepts",
                 1,
-                java.sql.Date.valueOf(LocalDate.now())));
+                java.sql.Date.valueOf(LocalDate.now())));*/
+        db.executeSelectQuery();
 
 
     }

@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Database {
@@ -21,6 +23,7 @@ public class Database {
             "description, " +
             "task_date, " +
             "priority) VALUES (?,?,?,?)";
+    private final String SELECT = "SELECT * FROM todos";
     private String getConnectionURL(){
         String propsPath = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties";
         Properties properties = new Properties();
@@ -78,6 +81,34 @@ public class Database {
             System.out.println("Established Connection.");
             statement.executeUpdate();
             System.out.println("INSERTED");
+        } catch (SQLException e) {
+            System.out.println("SQL Error Occurred: "+ e.getMessage());
+            e.printStackTrace();
+        }finally {
+            System.out.println("Closed connection.");
+        }
+    }
+    public void executeSelectQuery(){
+        try(Connection connection = getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT)){
+            if(connection == null){
+                throw new SQLException("ERROR: Error getting connection.");
+            }
+            System.out.println("Established Connection.");
+            ResultSet resultSet = statement.executeQuery();
+            List<Todo> todos = new ArrayList<>();
+            while(resultSet.next()){
+                   todos.add(new Todo(
+                           resultSet.getInt("task_id"),
+                           resultSet.getString("title"),
+                           resultSet.getString("description"),
+                           resultSet.getInt("priority"),
+                           resultSet.getDate("task_date"),
+                           resultSet.getBoolean("done"),
+                           resultSet.getBoolean("deleted")));
+            }
+            System.out.println(todos);
+            System.out.println("SELECT *");
         } catch (SQLException e) {
             System.out.println("SQL Error Occurred: "+ e.getMessage());
             e.printStackTrace();

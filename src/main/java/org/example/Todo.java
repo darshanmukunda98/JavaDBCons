@@ -18,6 +18,16 @@ public class Todo {
         this.task_date = task_date;
     }
 
+    public Todo(int task_id, String title, String description, int priority, Date task_date, boolean done, boolean deleted) {
+        this.task_id = task_id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.task_date = task_date;
+        this.done = done;
+        this.deleted = deleted;
+    }
+
     public int getTask_id() {
         return task_id;
     }
@@ -72,5 +82,18 @@ public class Todo {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "task_id=" + task_id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", task_date=" + task_date +
+                ", done=" + done +
+                ", deleted=" + deleted +
+                '}';
     }
 }
