@@ -108,7 +108,6 @@ public class Database {
                            resultSet.getBoolean("deleted")));
             }
             System.out.println(todos);
-            System.out.println("SELECT *");
         } catch (SQLException e) {
             System.out.println("SQL Error Occurred: "+ e.getMessage());
             e.printStackTrace();
